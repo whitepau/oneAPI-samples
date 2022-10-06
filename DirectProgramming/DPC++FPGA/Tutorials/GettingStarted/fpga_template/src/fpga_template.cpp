@@ -30,7 +30,6 @@ class SimpleVAddKernel {
 #define VECT_SIZE 256
 
 int main() {
-  
 #if FPGA_SIMULATOR
   std::cout << "using FPGA Simulator." << std::endl;
   return sycl::ext::intel::fpga_simulator_selector{};
