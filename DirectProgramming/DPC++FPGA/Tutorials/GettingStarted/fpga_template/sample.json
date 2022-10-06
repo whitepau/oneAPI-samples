@@ -22,45 +22,24 @@
         ]
       },
       {
-        "id": "fpga_ip_report",
+        "id": "report",
         "steps": [
           "dpcpp --version",
           "mkdir build",
           "cd build",
           "cmake ..",
-          "make fpga_ip_report"
+          "make report"
         ]
       },
       {
-        "id": "fpga_ip_sim",
+        "id": "fpga_sim",
         "steps": [
           "dpcpp --version",
           "mkdir build",
           "cd build",
           "cmake ..",
-          "make fpga_ip_sim",
-          "./fpga_template.fpga_ip_sim"
-        ]
-      },
-      {
-        "id": "fpga_board_report",
-        "steps": [
-          "dpcpp --version",
-          "mkdir build",
-          "cd build",
-          "cmake ..",
-          "make fpga_board_report"
-        ]
-      },
-      {
-        "id": "fpga_board_sim",
-        "steps": [
-          "dpcpp --version",
-          "mkdir build",
-          "cd build",
-          "cmake ..",
-          "make fpga_board_sim",
-          "./fpga_template.fpga_board_sim"
+          "make fpga_sim",
+          "./fpga_template.fpga_sim"
         ]
       }
     ],
@@ -78,49 +57,26 @@
         ]
       },
       {
-        "id": "fpga_ip_report",
+        "id": "report",
         "steps": [
           "dpcpp --version",
           "cd ../../..",
           "mkdir build",
           "cd build",
           "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
-          "nmake fpga_ip_report"
+          "nmake report"
         ]
       },
       {
-        "id": "fpga_ip_sim",
+        "id": "fpga_sim",
         "steps": [
           "dpcpp --version",
           "cd ../../..",
           "mkdir build",
           "cd build",
           "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
-          "nmake fpga_ip_sim",
-          "fpga_template.fpga_ip_sim.exe"
-        ]
-      },
-      {
-        "id": "fpga_board_report",
-        "steps": [
-          "dpcpp --version",
-          "cd ../../..",
-          "mkdir build",
-          "cd build",
-          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
-          "nmake fpga_board_report"
-        ]
-      },
-      {
-        "id": "fpga_board_sim",
-        "steps": [
-          "dpcpp --version",
-          "cd ../../..",
-          "mkdir build",
-          "cd build",
-          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
-          "nmake fpga_board_sim",
-          "fpga_template.fpga_board_sim.exe"
+          "nmake fpga_sim",
+          "fpga_template.fpga_sim.exe"
         ]
       }
     ]

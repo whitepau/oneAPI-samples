@@ -4,8 +4,6 @@
 #include <CL/sycl.hpp>
 #include <sycl/ext/intel/fpga_extensions.hpp>
 
-#include "fpga_sim_device_selector.hpp"
-
 using namespace sycl;
 
 // Forward declare the kernel name in the global scope. This is an FPGA best
@@ -32,8 +30,17 @@ class SimpleVAddKernel {
 #define VECT_SIZE 256
 
 int main() {
-  // choose a selector that was selected by the default FPGA build system.
-  queue q(chooseSelector());
+  
+#if FPGA_SIMULATOR
+  std::cout << "using FPGA Simulator." << std::endl;
+  return sycl::ext::intel::fpga_simulator_selector{};
+#elif FPGA_HARDWARE
+  std::cout << "using FPGA Hardware." << std::endl;
+  return sycl::ext::intel::fpga_selector{};
+#else  // #if FPGA_EMULATOR
+  std::cout << "using FPGA Emulator." << std::endl;
+  return sycl::ext::intel::fpga_emulator_selector{};
+#endif
 
   int count = VECT_SIZE;  // pass array size by value
 
