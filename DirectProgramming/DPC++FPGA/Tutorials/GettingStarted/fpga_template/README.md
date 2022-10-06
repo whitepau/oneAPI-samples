@@ -1,15 +1,18 @@
-FPGA Template
-=============
+# FPGA Template
 
-This project serves as a template for oneAPI FPGA designs. Feel free to clone it
-and use it to start your projects off on the right foot!
+This project serves as a template for Intel® oneAPI FPGA designs. 
 
-## Description
+| Optimized for                     | Description
+|:---                               |:---
+| OS                                | Linux* Ubuntu* 18.04/20.04 <br> RHEL*/CentOS* 8 <br> SUSE* 15 <br> Windows* 10
+| Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) <br> Intel® FPGA 3rd party / custom platforms with oneAPI support <br> *__Note__: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
+| Software                          | Intel® oneAPI DPC++ Compiler <br> Intel® Quartus Prime Pro Edition <br> Siemens® Questa® Intel® FPGA Starter Edition
+| What you will learn               | Best practices for creating and managing a oneAPI FPGA project
+| Time to complete                  | 10 minutes
 
-You can customize the build flags by editing the top part of
-`src/CMakeLists.txt`. If you want to pass additional flags to `dpcpp`, you can
-change the `USER_FLAGS` and `USER_HARDWARE_FLAGS` variables defined in
-`src/CMakeLists.txt`. 
+## Purpose
+
+Use this project as a starting point when you build designs for the Intel® oneAPI FPGA compiler. It includes a CMake build system to abstract away the need to know all the various command-line flags for the `icpx` compiler, and a simple single-source design to serve as an example. You can customize the build flags by modifying the top part of `src/CMakeLists.txt`. If you want to pass additional flags to Intel DPC++ compiler, you can change the `USER_FLAGS` and `USER_HARDWARE_FLAGS` variables defined in `src/CMakeLists.txt`. 
 
 | Variable              | Description                                                                                                                                                                       |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -43,11 +46,19 @@ set(USER_FLAGS "${IPA_EXPERIMENTAL_INCLUDE}")
 # use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
 ```
 
-## Running the Design
+Everything below this in the `src/CMakeLists.txt` is necessary for selecting the compiler flags that are necessary to support the build targets specified below, and should not need to be modified.
+
+## License
+Code samples are licensed under the MIT license. See
+[License.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/License.txt) for details.
+
+Third party program Licenses can be found here: [third-party-programs.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/third-party-programs.txt).
+
+## Building the FPGA Template Tutorial
 Use these commands to run the design, depending on your OS.
 
-### Linux
-For best results, use Linux. This design uses CMake to build the project, generate build artifacts for GNU/make like this:
+### On a Linux* System 
+This design uses CMake to build the project, generate build artifacts for GNU/make like this:
 
 ```bash
 mkdir build
@@ -74,8 +85,8 @@ produce binaries that you can run. The executables will be called
 and `TARGET_NAME.fpga_board`, where `TARGET_NAME` is the value you specify in
 `src/CMakeLists.txt`.
 
-### Windows
-This design uses CMake to build the project, generate build artifacts for nmake like this:
+### On a Windows* System
+This design uses CMake to build the project, and generate build artifacts for `nmake` like this:
 
 ```bash
 mkdir build
