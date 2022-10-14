@@ -1,10 +1,8 @@
 #include <iostream>
 
 // oneAPI headers
-#include <CL/sycl.hpp>
+#include <sycl.hpp>
 #include <sycl/ext/intel/fpga_extensions.hpp>
-
-using namespace sycl;
 
 // Forward declare the kernel name in the global scope. This is an FPGA best
 // practice that reduces name mangling in the optimization reports.
@@ -32,22 +30,22 @@ class SimpleVAddKernel {
 int main() {
 #if FPGA_SIMULATOR
   std::cout << "using FPGA Simulator." << std::endl;
-  return sycl::ext::intel::fpga_simulator_selector{};
+  sycl::queue q(sycl::ext::intel::fpga_simulator_selector{});
 #elif FPGA_HARDWARE
   std::cout << "using FPGA Hardware." << std::endl;
-  return sycl::ext::intel::fpga_selector{};
+  sycl::queue q(sycl::ext::intel::fpga_selector{});
 #else  // #if FPGA_EMULATOR
   std::cout << "using FPGA Emulator." << std::endl;
-  return sycl::ext::intel::fpga_emulator_selector{};
+  sycl::queue q(sycl::ext::intel::fpga_emulator_selector{});
 #endif
 
   int count = VECT_SIZE;  // pass array size by value
 
   // declare arrays and fill them
   // allocate in shared memory so the kernel can see them
-  int *A = malloc_shared<int>(count, q);
-  int *B = malloc_shared<int>(count, q);
-  int *C = malloc_shared<int>(count, q);
+  int *A = sycl::malloc_shared<int>(count, q);
+  int *B = sycl::malloc_shared<int>(count, q);
+  int *C = sycl::malloc_shared<int>(count, q);
   for (int i = 0; i < count; i++) {
     A[i] = i;
     B[i] = (count - i);
@@ -70,9 +68,9 @@ int main() {
 
   std::cout << (passed ? "PASSED" : "FAILED") << std::endl;
 
-  free(A, q);
-  free(B, q);
-  free(C, q);
+  sycl::free(A, q);
+  sycl::free(B, q);
+  sycl::free(C, q);
 
   return passed ? EXIT_SUCCESS : EXIT_FAILURE;
 }
