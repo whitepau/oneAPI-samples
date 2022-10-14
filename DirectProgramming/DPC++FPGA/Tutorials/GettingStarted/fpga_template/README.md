@@ -34,10 +34,16 @@ set(TARGET_NAME <base name>)
 # Note that depending on your installation, you may need to specify the full 
 # path to the board support package (BSP), this usually is in your install 
 # folder.
-set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
+if(NOT DEFINED FPGA_DEVICE)
+    set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
+endif()
 
 # use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
 # compilation
+set(USER_HARDWARE_FLAGS "${USER_HARDWARE_FLAGS}")
+
+# use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
+set(USER_FLAGS "${USER_FLAGS}")
 set(USER_HARDWARE_FLAGS "")
 
 # use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
