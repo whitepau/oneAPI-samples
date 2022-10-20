@@ -28,49 +28,65 @@ class SimpleVAddKernel {
 #define VECT_SIZE 256
 
 int main() {
+  try {
 #if FPGA_SIMULATOR
-  std::cout << "using FPGA Simulator." << std::endl;
-  sycl::queue q(sycl::ext::intel::fpga_simulator_selector{});
+    std::cout << "using FPGA Simulator." << std::endl;
+    sycl::queue q(sycl::ext::intel::fpga_simulator_selector{});
 #elif FPGA_HARDWARE
-  std::cout << "using FPGA Hardware." << std::endl;
-  sycl::queue q(sycl::ext::intel::fpga_selector{});
+    std::cout << "using FPGA Hardware." << std::endl;
+    sycl::queue q(sycl::ext::intel::fpga_selector{});
 #else  // #if FPGA_EMULATOR
-  std::cout << "using FPGA Emulator." << std::endl;
-  sycl::queue q(sycl::ext::intel::fpga_emulator_selector{});
+    std::cout << "using FPGA Emulator." << std::endl;
+    sycl::queue q(sycl::ext::intel::fpga_emulator_selector{});
 #endif
 
-  int count = VECT_SIZE;  // pass array size by value
+    int count = VECT_SIZE;  // pass array size by value
 
-  // declare arrays and fill them
-  // allocate in shared memory so the kernel can see them
-  int *A = sycl::malloc_shared<int>(count, q);
-  int *B = sycl::malloc_shared<int>(count, q);
-  int *C = sycl::malloc_shared<int>(count, q);
-  for (int i = 0; i < count; i++) {
-    A[i] = i;
-    B[i] = (count - i);
-  }
-
-  std::cout << "add two vectors of size " << count << std::endl;
-
-  q.single_task<SimpleVAdd>(SimpleVAddKernel{A, B, C, count}).wait();
-
-  // verify that VC is correct
-  bool passed = true;
-  for (int i = 0; i < count; i++) {
-    int expected = A[i] + B[i];
-    if (C[i] != expected) {
-      std::cout << "idx=" << i << ": result " << C[i] << ", expected ("
-                << expected << ") A=" << A[i] << " + B=" << B[i] << std::endl;
-      passed = false;
+    // declare arrays and fill them
+    // allocate in shared memory so the kernel can see them
+    int *A = sycl::malloc_shared<int>(count, q);
+    int *B = sycl::malloc_shared<int>(count, q);
+    int *C = sycl::malloc_shared<int>(count, q);
+    for (int i = 0; i < count; i++) {
+      A[i] = i;
+      B[i] = (count - i);
     }
+
+    std::cout << "add two vectors of size " << count << std::endl;
+
+    q.single_task<SimpleVAdd>(SimpleVAddKernel{A, B, C, count}).wait();
+
+    // verify that VC is correct
+    bool passed = true;
+    for (int i = 0; i < count; i++) {
+      int expected = A[i] + B[i];
+      if (C[i] != expected) {
+        std::cout << "idx=" << i << ": result " << C[i] << ", expected ("
+                  << expected << ") A=" << A[i] << " + B=" << B[i] << std::endl;
+        passed = false;
+      }
+    }
+
+    std::cout << (passed ? "PASSED" : "FAILED") << std::endl;
+
+    sycl::free(A, q);
+    sycl::free(B, q);
+    sycl::free(C, q);
+
+  } catch (exception const &e) {
+    // Catches exceptions in the host code.
+    std::cerr << "Caught a SYCL host exception:\n" << e.what() << "\n";
+
+    // Most likely the runtime couldn't find FPGA hardware!
+    if (e.code().value() == CL_DEVICE_NOT_FOUND) {
+      std::cerr << "If you are targeting an FPGA, please ensure that your "
+                   "system has a correctly configured FPGA board.\n";
+      std::cerr << "Run sys_check in the oneAPI root directory to verify.\n";
+      std::cerr << "If you are targeting the FPGA emulator, compile with "
+                   "-DFPGA_EMULATOR.\n";
+    }
+    std::terminate();
   }
-
-  std::cout << (passed ? "PASSED" : "FAILED") << std::endl;
-
-  sycl::free(A, q);
-  sycl::free(B, q);
-  sycl::free(C, q);
 
   return passed ? EXIT_SUCCESS : EXIT_FAILURE;
 }

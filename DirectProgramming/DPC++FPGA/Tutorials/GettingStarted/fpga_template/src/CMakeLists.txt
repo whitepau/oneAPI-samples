@@ -5,7 +5,8 @@ set(SOURCE_FILE fpga_template.cpp)
 set(TARGET_NAME fpga_template)
 
 # use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
-# different device. Here are a few device examples:
+# different device. Here are a few device examples (this list is not
+# exhaustive):
 #   intel_s10sx_pac:pac_s10
 #   intel_s10sx_pac:pac_s10_usm
 #   intel_a10gx_pac:pac_a10
@@ -40,7 +41,13 @@ endif()
 # This is a Windows-specific flag that enables exception handling in host code
 if(WIN32)
     # add qactypes to link command on Windows only
-    set(QACTYPES_LINK "-qactypes")
+    set(QACTYPES_COMPILE "/Qactypes")
+    set(QACTYPES_LINK "/Qactypes")
+    set(WIN_FLAG "/EHsc")
+else()
+    # add qactypes for Linux
+    set(QACTYPES_COMPILE "-qactypes")
+    set(QACTYPES_LINK "")
 endif()
 
 # A DPC++ ahead-of-time (AoT) compile processes the device code in two stages.
@@ -48,9 +55,11 @@ endif()
 #    representation (SPIR-V).
 # 2. The "link" stage invokes the compiler's FPGA backend before linking. For
 #    this reason, FPGA backend flags must be passed as link flags in CMake.
-set(EMULATOR_COMPILE_FLAGS "-fsycl -fintelfpga -Wall -qactypes")
+
+set(EXPERIMENTAL_INCLUDE "-I\"$ENV{INTELFPGAOCLSDKROOT}/include\"")
+set(EMULATOR_COMPILE_FLAGS "-fsycl -fintelfpga -Wall ${WIN_FLAG} ${QACTYPES_COMPILE} ${EXPERIMENTAL_INCLUDE}")
 set(EMULATOR_LINK_FLAGS    "-fsycl -fintelfpga ${QACTYPES_LINK}")
-set(HARDWARE_COMPILE_FLAGS "-fsycl -fintelfpga -Wall -qactypes")
+set(HARDWARE_COMPILE_FLAGS "-fsycl -fintelfpga -Wall ${WIN_FLAG} ${QACTYPES_COMPILE} ${EXPERIMENTAL_INCLUDE}")
 set(BOARD_LINK_FLAGS       "-fsycl -fintelfpga -Xstarget=${FPGA_DEVICE}   ${USER_HARDWARE_FLAGS} ${QACTYPES_LINK}")
 
 ###############################################################################

@@ -5,7 +5,7 @@ else() # Windows
     # Force CMake to use icpx rather than the default C++ compiler/linker 
     # (needed on Windows only)
     include (CMakeForceCompiler)
-    CMAKE_FORCE_CXX_COMPILER (icpx IntelDPCPP)
+    CMAKE_FORCE_CXX_COMPILER (icx-cl IntelDPCPP)
     include (Platform/Windows-Clang)
 endif()
 

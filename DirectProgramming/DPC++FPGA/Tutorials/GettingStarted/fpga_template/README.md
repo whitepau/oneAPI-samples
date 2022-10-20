@@ -5,14 +5,18 @@ This project serves as a template for Intel® oneAPI FPGA designs.
 | Optimized for                     | Description
 |:---                               |:---
 | OS                                | Linux* Ubuntu* 18.04/20.04 <br> RHEL*/CentOS* 8 <br> SUSE* 15 <br> Windows* 10
-| Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) <br> Intel® FPGA 3rd party / custom platforms with oneAPI support <br> *__Note__: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
+| Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) Intel® FPGA 3rd party / custom platforms with oneAPI support (and SYCL USM support) Note: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
 | Software                          | Intel® oneAPI DPC++ Compiler <br> Intel® Quartus Prime Pro Edition <br> Siemens® Questa® Intel® FPGA Starter Edition
 | What you will learn               | Best practices for creating and managing a oneAPI FPGA project
 | Time to complete                  | 10 minutes
 
+***Notice**: SYCL Unified Shared Memory (USM) host allocations (and therefore the code in this tutorial) are only supported for the Intel® FPGA PAC D5005 (with Intel Stratix® 10 SX) with USM support (i.e., intel_s10sx_pac:pac_s10_usm)* 
+
 ## Purpose
 
-Use this project as a starting point when you build designs for the Intel® oneAPI FPGA compiler. It includes a CMake build system to abstract away the need to know all the various command-line flags for the compiler, and a simple single-source design to serve as an example. You can customize the build flags by modifying the top part of `src/CMakeLists.txt`: if you want to pass additional flags to the Intel® oneAPI FPGA compiler, you can change the `USER_FLAGS` and `USER_HARDWARE_FLAGS` variables defined in `src/CMakeLists.txt`. 
+Use this project as a starting point when you build designs for the Intel® oneAPI FPGA compiler. It includes a CMake build system to automate selecting the various command-line flags for the oneAPI FPGA compiler, and a simple single-source design to serve as an example. You can customize the build flags by modifying the top part of `src/CMakeLists.txt`: if you want to pass additional flags to the Intel® oneAPI FPGA compiler, you can change the `USER_FLAGS` and `USER_HARDWARE_FLAGS` variables defined in `src/CMakeLists.txt`. 
+
+> **Note**: The code sample in this design only uses USM for improved code simplicity as compared with buffers/accessors. The included CMake build system can be used for designs that do not use USM.
 
 | Variable              | Description                                                                                                                                                                       |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -27,7 +31,8 @@ set(SOURCE_FILE <source files>)
 set(TARGET_NAME <base name>)
 
 # use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
-# different device. Here are a few device examples:
+# different device. Here are a few device examples (this list is not
+# exhaustive):
 #   intel_s10sx_pac:pac_s10
 #   intel_s10sx_pac:pac_s10_usm
 #   intel_a10gx_pac:pac_a10
@@ -44,19 +49,9 @@ set(USER_HARDWARE_FLAGS "${USER_HARDWARE_FLAGS}")
 
 # use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
 set(USER_FLAGS "${USER_FLAGS}")
-set(USER_HARDWARE_FLAGS "")
-
-# use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
-set(USER_FLAGS "")
 ```
 
 Everything below this in the `src/CMakeLists.txt` is necessary for selecting the compiler flags that are necessary to support the build targets specified below, and should not need to be modified.
-
-## License
-Code samples are licensed under the MIT license. See
-[License.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/License.txt) for details.
-
-Third party program Licenses can be found here: [third-party-programs.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/third-party-programs.txt).
 
 ## Building the `fpga_template` Tutorial
 
@@ -208,3 +203,9 @@ You can compile and run this tutorial in the Eclipse* IDE (in Linux*) and the Vi
    ./fpga_template.fpga         (Linux)
    fpga_template.fpga.exe       (Windows)
    ```
+
+## License
+Code samples are licensed under the MIT license. See
+[License.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/License.txt) for details.
+
+Third party program Licenses can be found here: [third-party-programs.txt](https://github.com/oneapi-src/oneAPI-samples/blob/master/third-party-programs.txt).
