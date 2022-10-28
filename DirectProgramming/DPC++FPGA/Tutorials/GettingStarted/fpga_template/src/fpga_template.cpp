@@ -28,6 +28,8 @@ class SimpleVAddKernel {
 #define VECT_SIZE 256
 
 int main() {
+  bool passed = false;
+
   try {
 #if FPGA_SIMULATOR
     std::cout << "using FPGA Simulator." << std::endl;
@@ -57,7 +59,7 @@ int main() {
     q.single_task<SimpleVAdd>(SimpleVAddKernel{A, B, C, count}).wait();
 
     // verify that VC is correct
-    bool passed = true;
+    passed = true;
     for (int i = 0; i < count; i++) {
       int expected = A[i] + B[i];
       if (C[i] != expected) {
@@ -73,7 +75,7 @@ int main() {
     sycl::free(B, q);
     sycl::free(C, q);
 
-  } catch (exception const &e) {
+  } catch (sycl::exception const &e) {
     // Catches exceptions in the host code.
     std::cerr << "Caught a SYCL host exception:\n" << e.what() << "\n";
 

@@ -29,7 +29,7 @@ set(USER_FLAGS "${USER_FLAGS}")
 
 # define the different build targets the generated build script will support.
 set(EMULATOR_TARGET ${TARGET_NAME}.fpga_emu)
-set(REPORT_TARGET ${TARGET_NAME}.fpga_report)
+# set(REPORT_TARGET ${TARGET_NAME}.report)
 set(SIMULATOR_TARGET ${TARGET_NAME}.fpga_sim)
 set(FPGA_TARGET ${TARGET_NAME}.fpga)
 
