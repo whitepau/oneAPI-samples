@@ -4,7 +4,7 @@
 set(SOURCE_FILE fpga_template.cpp)
 set(TARGET_NAME fpga_template)
 
-# use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
+# Use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
 # different device. Here are a few device examples (this list is not
 # exhaustive):
 #   intel_s10sx_pac:pac_s10
@@ -17,11 +17,11 @@ if(NOT DEFINED FPGA_DEVICE)
     set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
 endif()
 
-# use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
-# compilation
+# Use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
+# compilation. 
 set(USER_HARDWARE_FLAGS "${USER_HARDWARE_FLAGS}")
 
-# use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
+# Use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation.
 set(USER_FLAGS "${USER_FLAGS}")
 ###############################################################################
 ### no changes after here

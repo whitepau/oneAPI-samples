@@ -30,7 +30,7 @@ Use this project as a starting point when you build designs for the Intel® oneA
 set(SOURCE_FILE <source files>)
 set(TARGET_NAME <base name>)
 
-# use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
+# Use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
 # different device. Here are a few device examples (this list is not
 # exhaustive):
 #   intel_s10sx_pac:pac_s10
@@ -43,11 +43,11 @@ if(NOT DEFINED FPGA_DEVICE)
     set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
 endif()
 
-# use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
-# compilation
+# Use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
+# compilation. 
 set(USER_HARDWARE_FLAGS "${USER_HARDWARE_FLAGS}")
 
-# use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation
+# Use cmake -DUSER_FLAGS=<flags> to set extra flags for general compilation.
 set(USER_FLAGS "${USER_FLAGS}")
 ```
 
