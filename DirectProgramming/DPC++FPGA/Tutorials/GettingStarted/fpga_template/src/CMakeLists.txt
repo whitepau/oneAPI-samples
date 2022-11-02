@@ -66,10 +66,10 @@ set(BOARD_LINK_FLAGS       "-fsycl -fintelfpga -Xstarget=${FPGA_DEVICE}   ${USER
 ### FPGA Emulator
 ###############################################################################
 # To compile in a single command:
-#    dpcpp -fintelfpga -DFPGA_EMULATOR fpga_compile.cpp -o fpga_compile.fpga_emu
+#    icpx -fsycl -fintelfpga -DFPGA_EMULATOR fpga_compile.cpp -o fpga_compile.fpga_emu
 # CMake executes:
-#    [compile] dpcpp -fintelfpga -DFPGA_EMULATOR -o fpga_compile.cpp.o -c fpga_compile.cpp
-#    [link]    dpcpp -fintelfpga fpga_compile.cpp.o -o fpga_compile.fpga_emu
+#    [compile] icpx -fsycl -fintelfpga -DFPGA_EMULATOR -o fpga_compile.cpp.o -c fpga_compile.cpp
+#    [link]    icpx -fsycl -fintelfpga fpga_compile.cpp.o -o fpga_compile.fpga_emu
 add_executable(${EMULATOR_TARGET} ${SOURCE_FILE})
 add_custom_target(fpga_emu DEPENDS ${EMULATOR_TARGET})
 set_target_properties(${EMULATOR_TARGET} PROPERTIES COMPILE_FLAGS "${EMULATOR_COMPILE_FLAGS} -DFPGA_EMULATOR ${USER_FLAGS}")
@@ -79,7 +79,7 @@ set_target_properties(${EMULATOR_TARGET} PROPERTIES LINK_FLAGS "${EMULATOR_LINK_
 ### Report
 ###############################################################################
 # To compile manually:
-#   dpcpp -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> -fsycl-link=early fpga_compile.cpp -o fpga_compile.report.a
+#   icpx -fsycl -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> -fsycl-link=early fpga_compile.cpp -o fpga_compile.report.a
 set(REPORT_TARGET ${TARGET_NAME}.report.a)
 # The compile output is not an executable, but an intermediate compilation result unique to DPC++.
 add_executable(${REPORT_TARGET} ${SOURCE_FILE})
@@ -92,10 +92,10 @@ set_target_properties(${REPORT_TARGET} PROPERTIES LINK_FLAGS "${BOARD_LINK_FLAGS
 ### FPGA Board Simulation
 ###############################################################################
 # To compile in a single command:
-#   dpcpp -fintelfpga -Xstarget=<FPGA_DEVICE> -Xssimulation -Xsghdl=1 fpga_compile.cpp -o fpga_compile.fpga_sim
+#   icpx -fsycl -fintelfpga -Xstarget=<FPGA_DEVICE> -Xssimulation -Xsghdl=1 fpga_compile.cpp -o fpga_compile.fpga_sim
 # CMake executes:
-#   [compile] dpcpp -fintelfpga -o fpga_compile.cpp.o -c fpga_compile.cpp
-#   [link]    dpcpp -fintelfpga -Xstarget=<FPGA_DEVICE> -Xssimulation -Xsghdl=1 fpga_compile.cpp.o -o fpga_compile.fpga_sim
+#   [compile] icpx -fsycl -fintelfpga -o fpga_compile.cpp.o -c fpga_compile.cpp
+#   [link]    icpx -fsycl -fintelfpga -Xstarget=<FPGA_DEVICE> -Xssimulation -Xsghdl=1 fpga_compile.cpp.o -o fpga_compile.fpga_sim
 add_executable(${SIMULATOR_TARGET} EXCLUDE_FROM_ALL ${SOURCE_FILE})
 add_custom_target(fpga_sim DEPENDS ${SIMULATOR_TARGET})
 set_target_properties(${SIMULATOR_TARGET} PROPERTIES COMPILE_FLAGS "${HARDWARE_COMPILE_FLAGS} -DFPGA_SIMULATOR ${USER_FLAGS}")
@@ -105,10 +105,10 @@ set_target_properties(${SIMULATOR_TARGET} PROPERTIES LINK_FLAGS "${BOARD_LINK_FL
 ### FPGA Board
 ###############################################################################
 # To compile in a single command:
-#   dpcpp -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> fpga_compile.cpp -o fpga_compile.fpga
+#   icpx -fsycl -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> fpga_compile.cpp -o fpga_compile.fpga
 # CMake executes:
-#   [compile] dpcpp -fintelfpga -o fpga_compile.cpp.o -c fpga_compile.cpp
-#   [link]    dpcpp -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> fpga_compile.cpp.o -o fpga_compile.fpga
+#   [compile] icpx -fsycl -fintelfpga -o fpga_compile.cpp.o -c fpga_compile.cpp
+#   [link]    icpx -fsycl -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> fpga_compile.cpp.o -o fpga_compile.fpga
 add_executable(${FPGA_TARGET} EXCLUDE_FROM_ALL ${SOURCE_FILE})
 add_custom_target(fpga DEPENDS ${FPGA_TARGET})
 set_target_properties(${FPGA_TARGET} PROPERTIES COMPILE_FLAGS "${HARDWARE_COMPILE_FLAGS} -DFPGA_HARDWARE ${USER_FLAGS}")
