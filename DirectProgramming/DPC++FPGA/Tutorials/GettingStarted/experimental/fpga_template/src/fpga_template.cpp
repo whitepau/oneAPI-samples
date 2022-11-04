@@ -45,10 +45,10 @@ int main() {
     int count = VECT_SIZE;  // pass array size by value
 
     // declare arrays and fill them
-    // allocate in shared memory so the kernel can see them
-    int *A = sycl::malloc_shared<int>(count, q);
-    int *B = sycl::malloc_shared<int>(count, q);
-    int *C = sycl::malloc_shared<int>(count, q);
+    // allocate in device memory so the kernel can see them
+    int *A = sycl::malloc_device<int>(count, q);
+    int *B = sycl::malloc_device<int>(count, q);
+    int *C = sycl::malloc_device<int>(count, q);
     for (int i = 0; i < count; i++) {
       A[i] = i;
       B[i] = (count - i);
