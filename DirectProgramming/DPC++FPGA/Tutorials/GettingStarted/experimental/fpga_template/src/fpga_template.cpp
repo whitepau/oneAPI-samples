@@ -45,18 +45,37 @@ int main() {
     int count = VECT_SIZE;  // pass array size by value
 
     // declare arrays and fill them
-    // allocate in device memory so the kernel can see them
-    int *A = sycl::malloc_device<int>(count, q);
-    int *B = sycl::malloc_device<int>(count, q);
-    int *C = sycl::malloc_device<int>(count, q);
+    int *A = new int[count];
+    int *B = new int[count];
+    int *C = new int[count];
     for (int i = 0; i < count; i++) {
       A[i] = i;
       B[i] = (count - i);
     }
 
+    // Copy to device memory so kernel can see them
+    int *A_device = sycl::malloc_device<int>(count, q);
+    q.memcpy(A_device, A, count * sizeof(int)).wait();
+    int *B_device = sycl::malloc_device<int>(count, q);
+    q.memcpy(B_device, B, count * sizeof(int)).wait();
+    int *C_device = sycl::malloc_device<int>(count, q);
+
+    std::cout << "A_device = " << A_device << std::endl;
+    std::cout << "B_device = " << B_device << std::endl;
+    std::cout << "C_device = " << C_device << std::endl;
+
     std::cout << "add two vectors of size " << count << std::endl;
 
-    q.single_task<SimpleVAdd>(SimpleVAddKernel{A, B, C, count}).wait();
+    q.single_task<SimpleVAdd>(
+         SimpleVAddKernel{A_device, B_device, C_device, count})
+        .wait();
+
+    // Copy from device memory 
+    q.memcpy(C, C_device, count * sizeof(int));
+
+    sycl::free(A, q);
+    sycl::free(B, q);
+    sycl::free(C, q);
 
     // verify that VC is correct
     passed = true;
@@ -71,9 +90,9 @@ int main() {
 
     std::cout << (passed ? "PASSED" : "FAILED") << std::endl;
 
-    sycl::free(A, q);
-    sycl::free(B, q);
-    sycl::free(C, q);
+    delete [] A;
+    delete [] B;
+    delete [] C;
 
   } catch (sycl::exception const &e) {
     // Catches exceptions in the host code.
