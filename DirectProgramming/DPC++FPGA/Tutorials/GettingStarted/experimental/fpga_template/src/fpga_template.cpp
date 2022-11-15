@@ -60,10 +60,6 @@ int main() {
     q.memcpy(B_device, B, count * sizeof(int)).wait();
     int *C_device = sycl::malloc_device<int>(count, q);
 
-    std::cout << "A_device = " << A_device << std::endl;
-    std::cout << "B_device = " << B_device << std::endl;
-    std::cout << "C_device = " << C_device << std::endl;
-
     std::cout << "add two vectors of size " << count << std::endl;
 
     q.single_task<SimpleVAdd>(
@@ -73,9 +69,9 @@ int main() {
     // Copy from device memory 
     q.memcpy(C, C_device, count * sizeof(int));
 
-    sycl::free(A, q);
-    sycl::free(B, q);
-    sycl::free(C, q);
+    sycl::free(A_device, q);
+    sycl::free(B_device, q);
+    sycl::free(C_device, q);
 
     // verify that VC is correct
     passed = true;
