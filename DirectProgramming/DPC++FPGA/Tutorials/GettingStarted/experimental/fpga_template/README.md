@@ -6,7 +6,7 @@ This project serves as a template for Intel® oneAPI FPGA designs.
 |:---                               |:---
 | OS                                | Linux* Ubuntu* 18.04/20.04 <br> RHEL*/CentOS* 8 <br> SUSE* 15 <br> Windows* 10
 | Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) Intel® FPGA 3rd party / custom platforms with oneAPI support (and SYCL USM support) Note: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
-| Software                          | Intel® oneAPI DPC++ Compiler <br> Intel® Quartus Prime Pro Edition <br> Siemens® Questa® Intel® FPGA Starter Edition
+| Software                          | Intel® oneAPI DPC++ Compiler <br> Intel® Quartus Prime Pro Edition
 | What you will learn               | Best practices for creating and managing a oneAPI FPGA project
 | Time to complete                  | 10 minutes
 
@@ -16,10 +16,10 @@ This project serves as a template for Intel® oneAPI FPGA designs.
 
 Use this project as a starting point when you build designs for the Intel® oneAPI FPGA compiler. It includes a CMake build system to automate selecting the various command-line flags for the oneAPI FPGA compiler, and a simple single-source design to serve as an example. You can customize the build flags by modifying the top part of `src/CMakeLists.txt`: if you want to pass additional flags to the Intel® oneAPI FPGA compiler, you can change the `USER_FLAGS` and `USER_HARDWARE_FLAGS` variables defined in `src/CMakeLists.txt`. 
 
-> **Note**: The code sample in this design only uses USM for improved code simplicity as compared with buffers/accessors. The included CMake build system can be used for designs that do not use USM.
+> **Note**: The code sample in this design only uses USM for improved code simplicity as compared with buffers/accessors. The included CMake build system can also be used for designs that do not use USM.
 
 | Variable              | Description                                                                                                                                                                       |
-|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:---                   |:---
 | `USER_HARDWARE_FLAGS` | These flags apply only to flows that generate FPGA hardware (i.e. report, simulation, hardware). You can specify flags such as `-Xsclock` or `-Xshyper-optimized-handshaking=off` |
 | `USER_FLAGS`          | These flags apply to all flows, including emulation. You can specify flags such as `-v` or define macros such as `-DYOUR_OWN_MACRO=3`                                             |
 
@@ -112,12 +112,12 @@ This design uses CMake to generate a build script for GNU/make.
 
 2. Compile the design through the generated `Makefile`. The following build targets are provided, matching the recommended development flow:
 
-   | Target          | Expected Time  | Output                                                                       | Description                                                                                                                                                                                                                                                                                             |
-   |-----------------|----------------|------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | `make fpga_emu` | Seconds        | x86-64 binary                                                                | Compiles the FPGA device code to the CPU. Use the Intel® FPGA Emulation Platform for OpenCL™ software to verify your SYCL code’s functional correctness.                                                                                                                                                |
-   | `make report`   | Minutes        | RTL + FPGA reports                                                           | Compiles the FPGA device code to RTL and generates an optimization report that describes the structures generated on the FPGA, identifies performance bottlenecks, and estimates resource utilization. This report will include the interfaces defined in your selected Board Support Package.          |
-   | `make fpga_sim` | Minutes        | RTL + FPGA reports + x86-64 binary                                           | Compiles the FPGA device code to RTL and generates a simulation testbench. Use the Questa*-Intel® FPGA Edition simulator to verify your design.                                                                                                                                                         |
-   | `make fpga`     | Multiple Hours | Quartus Place & Route (Full accelerator) + FPGA reports + x86-64 host binary | Compiles the FPGA device code to RTL and generate an FPGA image that you can run on a supported accelerator board.                                                                                                                                                                                      |
+   | Target          | Expected Time  | Output                                                                       | Description
+   |:---             |:---            |:---                                                                          |:---
+   | `make fpga_emu` | Seconds        | x86-64 binary                                                                | Compiles the FPGA device code to the CPU. Use the Intel® FPGA Emulation Platform for OpenCL™ software to verify your SYCL code’s functional correctness.
+   | `make report`   | Minutes        | RTL + FPGA reports                                                           | Compiles the FPGA device code to RTL and generates an optimization report that describes the structures generated on the FPGA, identifies performance bottlenecks, and estimates resource utilization. This report will include the interfaces defined in your selected Board Support Package.
+   | `make fpga_sim` | Minutes        | RTL + FPGA reports + x86-64 binary                                           | Compiles the FPGA device code to RTL and generates a simulation testbench. Use the Questa*-Intel® FPGA Edition simulator to verify your design.
+   | `make fpga`     | Multiple Hours | Quartus Place & Route (Full accelerator) + FPGA reports + x86-64 host binary | Compiles the FPGA device code to RTL and generate an FPGA image that you can run on a supported accelerator board.
 
    The `fpga_emu`, `fpga_sim` and `fpga` targets produce binaries that you can run. The executables will be called `TARGET_NAME.fpga_emu`, `TARGET_NAME.fpga_sim`, and `TARGET_NAME.fpga`, where `TARGET_NAME` is the value you specify in `src/CMakeLists.txt`.
 
@@ -148,12 +148,12 @@ This design uses CMake to generate a build script for  `nmake`.
 
 2. Compile the design through the generated `Makefile`. The following build targets are provided, matching the recommended development flow:
 
-   | Target           | Expected Time  | Output                                                                       | Description                                                                                                                                                                                                                                                                                    |
-   |------------------|----------------|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | `nmake fpga_emu` | Seconds        | x86-64 binary                                                                | Compiles the FPGA device code to the CPU. Use the Intel® FPGA Emulation Platform for OpenCL™ software to verify your SYCL code’s functional correctness.                                                                                                                                       |
-   | `nmake report`   | Minutes        | RTL + FPGA reports                                                           | Compiles the FPGA device code to RTL and generates an optimization report that describes the structures generated on the FPGA, identifies performance bottlenecks, and estimates resource utilization. This report will include the interfaces defined in your selected Board Support Package. |
-   | `nmake fpga_sim` | Minutes        | RTL + FPGA reports + x86-64 binary                                           | Compiles the FPGA device code to RTL and generates a simulation testbench. Use the Questa*-Intel® FPGA Edition simulator to verify your design.                                                                                                                                                |
-   | `nmake fpga`     | Multiple Hours | Quartus Place & Route (Full accelerator) + FPGA reports + x86-64 host binary | Compiles the FPGA device code to RTL and generate an FPGA image that you can run on a supported accelerator board.                                                                                                                                                                             |
+   | Target           | Expected Time  | Output                                                                       | Description
+   |:---              |:---            |:---                                                                          |:---
+   | `nmake fpga_emu` | Seconds        | x86-64 binary                                                                | Compiles the FPGA device code to the CPU. Use the Intel® FPGA Emulation Platform for OpenCL™ software to verify your SYCL code’s functional correctness.
+   | `nmake report`   | Minutes        | RTL + FPGA reports                                                           | Compiles the FPGA device code to RTL and generates an optimization report that describes the structures generated on the FPGA, identifies performance bottlenecks, and estimates resource utilization. This report will include the interfaces defined in your selected Board Support Package.
+   | `nmake fpga_sim` | Minutes        | RTL + FPGA reports + x86-64 binary                                           | Compiles the FPGA device code to RTL and generates a simulation testbench. Use the Questa*-Intel® FPGA Edition simulator to verify your design.
+   | `nmake fpga`     | Multiple Hours | Quartus Place & Route (Full accelerator) + FPGA reports + x86-64 host binary | Compiles the FPGA device code to RTL and generate an FPGA image that you can run on a supported accelerator board.
 
    The `fpga_emu`, `fpga_sim`, and `fpga` targets also produce binaries that you can run. The executables will be called `TARGET_NAME.fpga_emu.exe`, `TARGET_NAME.fpga_sim.exe`, and `TARGET_NAME.fpga.exe`, where `TARGET_NAME` is the value you specify in `src/CMakeLists.txt`.
 
