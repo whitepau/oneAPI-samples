@@ -14,7 +14,7 @@ set(TARGET_NAME fpga_template)
 # path to the board support package (BSP), this usually is in your install 
 # folder.
 if(NOT DEFINED FPGA_DEVICE)
-    set(FPGA_DEVICE "intel_a10gx_pac:pac_a10")
+    set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
 endif()
 
 # Use cmake -DUSER_HARDWARE_FLAGS=<flags> to set extra flags for FPGA backend
