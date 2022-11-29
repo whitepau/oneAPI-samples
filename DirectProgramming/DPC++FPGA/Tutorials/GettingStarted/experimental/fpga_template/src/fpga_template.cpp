@@ -6,7 +6,7 @@
 
 // Forward declare the kernel name in the global scope. This is an FPGA best
 // practice that reduces name mangling in the optimization reports.
-class VAdd_ID;
+class vector_add_ID;
 
 class vector_add {
  public:
@@ -56,7 +56,7 @@ int main() {
 
     std::cout << "add two vectors of size " << count << std::endl;
 
-    q.single_task<VAdd_ID>(vector_add{A, B, C, count}).wait();
+    q.single_task<vector_add_ID>(vector_add{A, B, C, count}).wait();
 
     // verify that VC is correct
     passed = true;
