@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.4.0)
 
-set(CMAKE_CXX_COMPILER "icpx")
+set(CMAKE_CXX_COMPILER "dpcpp")
 
 project (guided_hsopticalflow_SYCLMigration)
 # Set default build type to RelWithDebInfo if not specified

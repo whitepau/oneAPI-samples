@@ -18,7 +18,7 @@
 #include <oneapi/dpl/algorithm>
 #include <oneapi/dpl/execution>
 #include <oneapi/dpl/iterator>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <algorithm>
 #include "pointpillars/postprocess.hpp"   // the oneapi headers have to be included at first here!
 #include "devicemanager/devicemanager.hpp"

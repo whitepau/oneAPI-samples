@@ -1,4 +1,4 @@
-# Copyright Intel Corporation
+# Copyright 2020, 2021 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import argparse
-from math import sqrt
 from time import time
-
+from math import sqrt
+import numpy as np
+import argparse
+import numba_dppy as dppy
 import dpctl
 import dpctl.memory as dpctl_mem
-import numpy as np
 
-import numba_dpex as dpex
-
-parser = argparse.ArgumentParser(
-    description="Program to compute pairwise distance"
-)
+parser = argparse.ArgumentParser(description="Program to compute pairwise distance")
 
 parser.add_argument("-n", type=int, default=10, help="Number of points")
 parser.add_argument("-d", type=int, default=3, help="Dimensions")
@@ -38,22 +34,21 @@ global_size = args.n
 # Local Work size is optional
 local_size = args.l
 
-X = np.random.random((args.n, args.d)).astype(np.single)
-D = np.empty((args.n, args.n), dtype=np.single)
+X = np.random.random((args.n, args.d))
+D = np.empty((args.n, args.n))
 
 
-@dpex.kernel
+@dppy.kernel
 def pairwise_distance(X, D, xshape0, xshape1):
     """
     An Euclidean pairwise distance computation implemented as
     a ``kernel`` function.
     """
-    idx = dpex.get_global_id(0)
+    idx = dppy.get_global_id(0)
 
-    d0 = X[idx, 0] - X[idx, 0]
     # for i in range(xshape0):
     for j in range(X.shape[0]):
-        d = d0
+        d = 0.0
         for k in range(X.shape[1]):
             tmp = X[idx, k] - X[j, k]
             d += tmp * tmp

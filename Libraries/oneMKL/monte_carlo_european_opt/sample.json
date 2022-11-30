@@ -15,7 +15,7 @@
         "id": "monte_carlo_european_opt",
         "steps": [
           "make clean",
-          "make && ./montecarlo"
+          "make"
         ]
       }
     ],
@@ -24,7 +24,7 @@
         "id": "monte_carlo_european_opt",
         "steps": [
           "nmake clean",
-          "nmake && montecarlo.exe"
+          "nmake"
         ]
       }
     ]

@@ -11,7 +11,7 @@
 #include <thread>
 #include <numeric>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 #include <tbb/blocked_range.h>
 #include <tbb/flow_graph.h>

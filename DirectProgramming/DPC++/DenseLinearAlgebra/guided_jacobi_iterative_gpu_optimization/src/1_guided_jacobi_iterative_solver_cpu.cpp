@@ -6,7 +6,7 @@
 // =============================================================
 #include <bits/stdc++.h>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <algorithm>
 #include <chrono>
 #include <cstdlib>
@@ -26,6 +26,7 @@ static const int kMinRand = -1000;
 static const int kMaxRaand = 1000;
 static const int kMaxSweepps = 100;
 static const std::uint32_t kSeed = 666;
+cpu_selector selector;
 std::ofstream outfile;
 
 // Function responsible for generating a float type

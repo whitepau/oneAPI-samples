@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: MIT
 // =============================================================
 #include <mutex>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 using namespace sycl;
 static const int N = 20;
 

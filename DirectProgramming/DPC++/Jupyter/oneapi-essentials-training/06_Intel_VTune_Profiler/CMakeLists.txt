@@ -1,12 +1,12 @@
-# CMakeLists.txt for ISO3DFD_SYCL project
-project (iso3dfd_sycl)
+# CMakeLists.txt for ISO3DFD_DPCPP project
+project (iso3dfd_dpcpp)
 
 # required cmake version
 cmake_minimum_required(VERSION 3.5)
 
 OPTION(SHARED_KERNEL "Use SLM Kernel Version - Only for GPU" OFF)
 
-set(CMAKE_CXX_COMPILER "icpx")
+set(CMAKE_CXX_COMPILER "dpcpp")
 
 if(SHARED_KERNEL)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DUSE_SHARED -fsycl -std=c++11")

@@ -42,8 +42,7 @@ def create_queue_from_device():
     Create a queue from SyclDevice instance.
     """
     cpu_d = dpctl.SyclDevice("opencl:cpu:0")
-    q = dpctl.SyclQueue(cpu_d, property="enable_profiling")
-    assert q.sycl_device == cpu_d
+    q = dpctl.SyclQueue(cpu_d, property="enable_profiling")    
     print(
         "Number of devices in SyclContext " "associated with the queue: ",
         q.sycl_context.device_count,

@@ -18,8 +18,6 @@ The `Base: Vector Add` is a relatively simple program that adds two large vector
 
 This sample provides example implementations of both Unified Shared Memory (USM) and buffers for side-by-side comparison.
 
->**Note**: See the `Simple Add` sample to examine another getting started sample you can use to learn more about using the Intel® oneAPI Toolkits to develop SYCL-compliant applications for CPU, GPU, and FPGA devices.
-
 ## Prerequisites
 
 | Optimized for                     | Description
@@ -75,112 +73,101 @@ To learn more about the extensions and how to configure the oneAPI environment, 
 
 ### On Linux*
 
-#### Configure the build system
+#### Build for CPU and GPU
 
 1. Change to the sample directory.
-2. 
-   Configure the project to use the buffer-based implementation.
-   ```
-   mkdir build
-   cd build
-   cmake ..
-   ```
-   or
 
-   Configure the project to use the Unified Shared Memory (USM) based implementation.
-   ```
-   mkdir build
-   cd build
-   cmake .. -DUSM=1
-   ```
-
-#### Build for CPU and GPU
-    
-1. Build the program.
-   ```
-   make cpu-gpu
-   ```   
-2. Clean the program. (Optional)
+2. Build the program for Unified Shared Memory (USM).
+    ```
+    mkdir build
+    cd build
+    cmake .. -DUSM=1
+    make cpu-gpu
+    ```
+3. Clean the program. (Optional)
    ```
    make clean
    ```
 
 #### Build for FPGA
 
-1. Compile for FPGA emulation.
-   ```
-   make fpga_emu
-   ```
-2. Generate HTML performance reports.
-   ```
-   make report
-   ```
-   The reports reside at `simple-add_report.prj/reports/report.html`.
+1.  Change to the sample directory.
 
-3. Compile the program for FPGA hardware. (Compiling for hardware can take a long
-time.)
-   ```
-   make fpga
-   ```
+2.  Build the program. (The provided targets match the recommended development flow.)
+    ```
+    mkdir build
+    cd build
+    cmake ..
+    ```
+    1. Compile for FPGA emulation.
+       ```
+       make fpga_emu
+       ```
+    2. Generate HTML performance reports.
+       ```
+       make report
+       ```
+       The reports reside at `vector-add_report.prj/reports/report.html`.
 
-4. Clean the program. (Optional)
+    3. Compile the program for FPGA hardware. (Compiling for hardware can take a long
+   time.)
+       ```
+       make fpga
+       ```
+
+3. Clean the program. (Optional)
    ```
    make clean
    ```
 
 ### On Windows*
 
-#### Configure the build system
+#### Build for CPU and GPU on the Command Line
 
 1. Change to the sample directory.
-2. 
-   Configure the project to use the buffer-based implementation.
+
+2. Build the program for Unified Shared Memory (USM).
    ```
    mkdir build
    cd build
-   cmake -G "NMake Makefiles" ..
-   ```
-   or
-
-   Configure the project to use the Unified Shared Memory (USM) based implementation.
-   ```
-   mkdir build
-   cd build
-   cmake -G "NMake Makefiles" .. -DUSM=1
-   ```
-
-#### Build for CPU and GPU
-
-1. Build the program.
-   ```
+   cmake -G \"NMake Makefiles\" .. -DUSM=1
    nmake cpu-gpu
    ```
-2. Clean the program. (Optional)
+3. Clean the program. (Optional)
    ```
    nmake clean
    ```
 
-#### Build for FPGA
+#### Build for FPGA on the Command Line
 
 >**Note**: Compiling to FPGA hardware on Windows* requires a third-party or custom Board Support Package (BSP) with Windows* support.
 
-1. Compile for FPGA emulation.
-   ```
-   nmake fpga_emu
-   ```
-2. Generate HTML performance reports.
-   ```
-   nmake report
-   ```
-The reports reside at `simple-add_report.prj/reports/report.html`.
+1. Change to the sample directory.
 
-3. Compile the program for FPGA hardware. (Compiling for hardware can take a long
-time.)
-   ```
-   nmake fpga
-   ```
+2. Build the program.
 
-4. Clean the program. (Optional)
+   ```
+   mkdir build
+   cd build
+   cmake -G \"NMake Makefiles\" ..
+   ```
+    1. Compile for FPGA emulation.
+       ```
+       nmake fpga_emu
+       ```
+    2. Generate HTML performance reports.
+       ```
+       nmake report
+       ```
+       The reports reside at `vector-add_report.prj/reports/report.html`.
+
+    3. Compile the program for FPGA hardware. (Compiling for hardware can take a long
+   time.)
+       ```
+       nmake fpga
+       ```
+
+3. Clean the program. (Optional)
    ```
    nmake clean
    ```

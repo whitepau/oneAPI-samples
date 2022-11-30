@@ -20,8 +20,6 @@ constexpr int kLocalN = 5;
 // # times to execute the kernel. kTimes must be >= kLocalN
 #if defined(FPGA_EMULATOR)
 constexpr int kTimes = 20;
-#elif defined(FPGA_SIMULATOR)
-constexpr int kTimes = 10;
 #else
 constexpr int kTimes = 100;
 #endif
@@ -29,8 +27,6 @@ constexpr int kTimes = 100;
 // # of floats to process on each kernel execution.
 #if defined(FPGA_EMULATOR)
 constexpr int kSize = 4096;
-#elif defined(FPGA_SIMULATOR)
-constexpr int kSize = 256;
 #else
 constexpr int kSize = 2621440;  // ~10MB
 #endif
@@ -38,18 +34,10 @@ constexpr int kSize = 2621440;  // ~10MB
 // Kernel executes a power function (base^kPow). Must be
 // >= 2. Can increase this to increase kernel execution
 // time, but ProcessOutput() time will also increase.
-#if defined(FPGA_SIMULATOR)
-constexpr int kPow = 5;
-#else
 constexpr int kPow = 20;
-#endif
 
 // Number of iterations through the main loop
-#if defined(FPGA_SIMULATOR)
-constexpr int kNumRuns = 2;
-#else
 constexpr int kNumRuns = 4;
-#endif
 
 bool pass = true;
 
@@ -217,12 +205,6 @@ int main() {
 #if defined(FPGA_EMULATOR)
   ext::intel::fpga_emulator_selector device_selector;
   std::cout << "\nEmulator output does not demonstrate true hardware "
-               "performance. The design may need to run on actual hardware "
-               "to observe the performance benefit of the optimization "
-               "exemplified in this tutorial.\n\n";
-#elif defined(FPGA_SIMULATOR)
-  ext::intel::fpga_simulator_selector device_selector;
-  std::cout << "\nSimulator output does not demonstrate true hardware "
                "performance. The design may need to run on actual hardware "
                "to observe the performance benefit of the optimization "
                "exemplified in this tutorial.\n\n";
@@ -456,8 +438,6 @@ int main() {
       std::cerr << "Run sys_check in the oneAPI root directory to verify.\n";
       std::cerr << "If you are targeting the FPGA emulator, compile with "
                    "-DFPGA_EMULATOR.\n";
-      std::cerr << "If you are targeting the FPGA simulator, compile with "
-                   "-DFPGA_SIMULATOR.\n";
     }
     std::terminate();
   }

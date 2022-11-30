@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.5)
 if(WIN32)
         set(CMAKE_CXX_COMPILER "dpcpp")
 else()
-        set(CMAKE_CXX_COMPILER "icpx")
+        set(CMAKE_CXX_COMPILER "dpcpp")
 endif()
 
 project (PrefixSum)

@@ -9,7 +9,7 @@
 #include <oneapi/dpl/iterator>
 #include <iomanip>
 #include <iostream>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 #include "utils.hpp"
 

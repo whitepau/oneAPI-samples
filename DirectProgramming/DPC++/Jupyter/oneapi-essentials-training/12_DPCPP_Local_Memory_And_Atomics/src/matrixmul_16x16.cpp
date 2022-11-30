@@ -5,7 +5,7 @@
 // =============================================================
 
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <iomanip>
 
 using namespace sycl;

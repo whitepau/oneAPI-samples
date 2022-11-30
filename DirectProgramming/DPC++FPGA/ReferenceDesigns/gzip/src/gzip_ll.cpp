@@ -127,8 +127,6 @@ int main(int argc, char *argv[]) {
   try {
 #ifdef FPGA_EMULATOR
     ext::intel::fpga_emulator_selector device_selector;
-#elif FPGA_SIMULATOR
-    ext::intel::fpga_simulator_selector device_selector;
 #else
     ext::intel::fpga_selector device_selector;
 #endif
@@ -162,8 +160,6 @@ int main(int argc, char *argv[]) {
 
 #ifdef FPGA_EMULATOR
     CompressFile(q, infilename, outfilenames, 10, true);
-#elif FPGA_SIMULATOR
-    CompressFile(q, infilename, outfilenames, 2, true);
 #else
     // warmup run - use this run to warmup accelerator. There are some steps in
     // the runtime that are only executed on the first kernel invocation but not
@@ -184,8 +180,6 @@ int main(int argc, char *argv[]) {
       std::cerr << "Run sys_check in the oneAPI root directory to verify.\n";
       std::cerr << "If you are targeting the FPGA emulator, compile with "
                    "-DFPGA_EMULATOR.\n";
-      std::cerr << "If you are targeting the FPGA simulator, compile with "
-                   "-DFPGA_SIMULATOR.\n";
     }
     std::terminate();
   }
@@ -392,9 +386,7 @@ int CompressFile(queue &q, std::string &input_file,
     }
   }
 
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
   auto start = std::chrono::steady_clock::now();
 #endif
 
@@ -449,9 +441,7 @@ int CompressFile(queue &q, std::string &input_file,
   }
 
 // Stop the timer.
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
   auto end = std::chrono::steady_clock::now();
   double diff_total = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
   if (report) {
@@ -537,9 +527,7 @@ int CompressFile(queue &q, std::string &input_file,
   if (report) {
     double compression_ratio = (double)((double)compressed_sz[0] / (double)isz /
                                         BATCH_SIZE / iterations);
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
     std::cout << "Throughput: " << kNumEngines * gbps << " GB/s\n\n";
     for (int eng = 0; eng < kNumEngines; eng++) {
       std::cout << "TP breakdown for engine #" << eng << " (GB/s)\n";

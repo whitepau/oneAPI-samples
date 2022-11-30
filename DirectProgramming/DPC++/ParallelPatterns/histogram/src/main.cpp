@@ -9,7 +9,7 @@
 #include <oneapi/dpl/execution>
 #include <oneapi/dpl/numeric>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <iostream>
 #include <random>
 

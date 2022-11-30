@@ -1,5 +1,5 @@
 #include <iostream>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 // Hand-coded SYCL maxloc reduction operator.
 

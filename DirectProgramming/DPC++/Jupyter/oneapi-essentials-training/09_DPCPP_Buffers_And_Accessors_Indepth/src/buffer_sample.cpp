@@ -3,7 +3,7 @@
 //
 // SPDX-License-Identifier: MIT
 // =============================================================
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 constexpr int num=16;
 using namespace sycl;

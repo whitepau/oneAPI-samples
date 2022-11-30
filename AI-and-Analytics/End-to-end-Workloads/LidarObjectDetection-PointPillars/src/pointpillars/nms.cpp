@@ -12,7 +12,7 @@
 // ------------------------------------------------------------------
 
 #include "pointpillars/nms.hpp"
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <algorithm>
 #include <numeric>
 #include <set>

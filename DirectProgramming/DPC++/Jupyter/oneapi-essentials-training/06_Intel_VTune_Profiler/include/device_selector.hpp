@@ -10,7 +10,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
-#include "sycl/sycl.hpp"
+#include "CL/sycl.hpp"
 
 // This is the class provided to SYCL runtime by the application to decide
 // on which device to run, or whether to run at all.

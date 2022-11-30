@@ -11,7 +11,7 @@
 #include <sstream>
 #include <thread>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 #include <tbb/blocked_range.h>
 #include <tbb/global_control.h>

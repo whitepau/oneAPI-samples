@@ -81,7 +81,7 @@
 *     < 0:        if INFO = -i, the i-th argument had an illegal value
 ***********************************************************************/
 #include <cstdint>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include "oneapi/mkl.hpp"
 
 using namespace oneapi;

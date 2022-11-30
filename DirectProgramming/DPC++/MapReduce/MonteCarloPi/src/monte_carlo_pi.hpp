@@ -5,6 +5,6 @@ struct rgb {
 };
 
 struct coordinate {
-  float x;
-  float y;
+  double x;
+  double y;
 };

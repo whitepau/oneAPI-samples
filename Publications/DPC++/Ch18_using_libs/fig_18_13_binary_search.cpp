@@ -14,7 +14,7 @@
 #include <oneapi/dpl/algorithm>
 #include <oneapi/dpl/iterator>
 #include <iostream>
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 using namespace sycl;
 

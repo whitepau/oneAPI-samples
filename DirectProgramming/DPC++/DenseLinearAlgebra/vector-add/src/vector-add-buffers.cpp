@@ -2,16 +2,16 @@
 // Vector Add is the equivalent of a Hello, World! sample for data parallel
 // programs. Building and running the sample verifies that your development
 // environment is setup correctly and demonstrates the use of the core features
-// of SYCL. This sample runs on both CPU and GPU (or FPGA). When run, it
+// of DPC++. This sample runs on both CPU and GPU (or FPGA). When run, it
 // computes on both the CPU and offload device, then compares results. If the
 // code executes on both CPU and offload device, the device name and a success
 // message are displayed. And, your development environment is setup correctly!
 //
-// For comprehensive instructions regarding SYCL Programming, go to
+// For comprehensive instructions regarding DPC++ Programming, go to
 // https://software.intel.com/en-us/oneapi-programming-guide and search based on
 // relevant terms noted in the comments.
 //
-// SYCL material used in the code sample:
+// DPC++ material used in the code sample:
 // •	A one dimensional array of data.
 // •	A device queue, buffer, accessor, and kernel.
 //==============================================================
@@ -51,7 +51,7 @@ static auto exception_handler = [](sycl::exception_list e_list) {
 };
 
 //************************************
-// Vector add in SYCL on device: returns sum in 4th parameter "sum_parallel".
+// Vector add in DPC++ on device: returns sum in 4th parameter "sum_parallel".
 //************************************
 void VectorAdd(queue &q, const IntVector &a_vector, const IntVector &b_vector,
                IntVector &sum_parallel) {
@@ -83,7 +83,7 @@ void VectorAdd(queue &q, const IntVector &a_vector, const IntVector &b_vector,
       //    1st parameter is the number of work items.
       //    2nd parameter is the kernel, a lambda that specifies what to do per
       //    work item. The parameter of the lambda is the work item id.
-      // SYCL supports unnamed lambda kernel by default.
+      // DPC++ supports unnamed lambda kernel by default.
       h.parallel_for(num_items, [=](auto i) { sum[i] = a[i] + b[i]; });
     });
   };
@@ -108,10 +108,10 @@ int main(int argc, char* argv[]) {
   if (argc > 1) vector_size = std::stoi(argv[1]);
   // Create device selector for the device of your interest.
 #if FPGA_EMULATOR
-  // Intel extension: FPGA emulator selector on systems without FPGA card.
+  // DPC++ extension: FPGA emulator selector on systems without FPGA card.
   ext::intel::fpga_emulator_selector d_selector;
 #elif FPGA
-  // Intel extension: FPGA selector on systems with FPGA card.
+  // DPC++ extension: FPGA selector on systems with FPGA card.
   ext::intel::fpga_selector d_selector;
 #else
   // The default device selector will select the most performant device.
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
               << q.get_device().get_info<info::device::name>() << "\n";
     std::cout << "Vector size: " << a.size() << "\n";
 
-    // Vector addition in SYCL
+    // Vector addition in DPC++
     VectorAdd(q, a, b, sum_parallel);
   } catch (exception const &e) {
     std::cout << "An exception is caught for vector add.\n";

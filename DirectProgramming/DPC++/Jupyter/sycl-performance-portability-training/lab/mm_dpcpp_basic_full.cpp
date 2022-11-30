@@ -7,7 +7,7 @@
 // =============================================================
 
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <ctime>
 #include <chrono>
 #include <getopt.h>

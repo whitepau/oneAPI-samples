@@ -4,12 +4,12 @@
 // SPDX-License-Identifier: MIT
 // =============================================================
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 constexpr int N = 16;
 using namespace sycl;
 
 // Buffer creation happens within a separate function scope.
-void SYCL_code(std::vector<int> &v, queue &q) {
+void dpcpp_code(std::vector<int> &v, queue &q) {
   auto R = range<1>(N);
   buffer buf(v);
   q.submit([&](handler &h) {
@@ -20,7 +20,7 @@ void SYCL_code(std::vector<int> &v, queue &q) {
 int main() {
   std::vector<int> v(N, 10);
   queue q;
-  SYCL_code(v, q);
+  dpcpp_code(v, q);
   // When execution advances beyond this function scope, buffer destructor is
   // invoked which relinquishes the ownership of data and copies back the data to
   // the host memory.

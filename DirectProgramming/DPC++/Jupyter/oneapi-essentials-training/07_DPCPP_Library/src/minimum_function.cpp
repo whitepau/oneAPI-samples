@@ -23,16 +23,16 @@ int main() {
         buffer buf(v);
         buffer buf_res(result);
 
-        //oneDPL buffer iterators for both the input and the result vectors
+        //dpstd buffer iterators for both the input and the result vectors
         auto start_v = oneapi::dpl::begin(buf);
         auto end_v = oneapi::dpl::end(buf);
         auto start_res = oneapi::dpl::begin(buf_res);
         auto end_res = oneapi::dpl::end(buf_res);
         
         //use std::fill to initialize the result vector
-        oneapi::dpl::fill(oneapi::dpl::execution::dpcpp_default,start_res, end_res, 0);  
+        std::fill(oneapi::dpl::execution::dpcpp_default,start_res, end_res, 0);  
         //usage of dpl::minimum<> function call within the std::exclusive_scan function
-        oneapi::dpl::exclusive_scan(oneapi::dpl::execution::dpcpp_default, start_v, end_v, start_res, int(0), oneapi::dpl::minimum<int>() );        
+        std::exclusive_scan(oneapi::dpl::execution::dpcpp_default, start_v, end_v, start_res, int(0), oneapi::dpl::minimum<int>() );        
     }    
     
     for(int i = 0; i < result.size(); i++) std::cout << result[i] << "\n";

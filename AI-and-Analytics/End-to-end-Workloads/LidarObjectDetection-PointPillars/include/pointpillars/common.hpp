@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 // using MACRO to allocate memory inside kernel
 #define NUM_3D_BOX_CORNERS_MACRO 8

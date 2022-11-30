@@ -12,7 +12,7 @@
  *
  *******************************************************************************/
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <vector>

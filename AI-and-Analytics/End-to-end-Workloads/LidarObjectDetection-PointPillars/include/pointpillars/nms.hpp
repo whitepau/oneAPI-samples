@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include "pointpillars/common.hpp"
 
 namespace pointpillars {

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# Copyright Intel Corporation
+# Copyright 2020, 2021 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,25 +14,24 @@
 # limitations under the License.
 
 import dpctl
+import numba_dppy as dppy
 import numpy as np
 
-import numba_dpex as dpex
 
-
-@dpex.kernel
+@dppy.kernel
 def data_parallel_sum(a, b, c):
     """
     A two-dimensional vector addition example using the ``kernel`` decorator.
     """
-    i = dpex.get_global_id(0)
-    j = dpex.get_global_id(1)
+    i = dppy.get_global_id(0)
+    j = dppy.get_global_id(1)
     c[i, j] = a[i, j] + b[i, j]
 
 
 def driver(a, b, c, global_size):
     print("before A: ", a)
     print("before B: ", b)
-    data_parallel_sum[global_size, dpex.DEFAULT_LOCAL_SIZE](a, b, c)
+    data_parallel_sum[global_size, dppy.DEFAULT_LOCAL_SIZE](a, b, c)
     print("after  C : ", c)
 
 

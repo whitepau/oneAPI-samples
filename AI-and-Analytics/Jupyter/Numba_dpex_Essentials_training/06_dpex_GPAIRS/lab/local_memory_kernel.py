@@ -16,7 +16,7 @@ import dpctl
 import numpy as np
 from numba import float32
 
-import numba_dpex as dpex
+import numba_dppy as dpex
 
 
 def no_arg_barrier_support():

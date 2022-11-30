@@ -5,7 +5,7 @@
 // =============================================================
 
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <array>
 using namespace sycl;
 constexpr int N = 42;

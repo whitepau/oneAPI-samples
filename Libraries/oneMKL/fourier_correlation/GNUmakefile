@@ -12,13 +12,13 @@ run_all: fcorr_1d_buff fcorr_1d_usm fcorr_2d_usm
 DPCPP_OPTS = -DMKL_ILP64 -I${MKLROOT}/include -qmkl=parallel
 
 fcorr_1d_buff: fcorr_1d_buffers.cpp
-	icpx $< -fsycl -o $@ $(DPCPP_OPTS)
+	dpcpp $< -o $@ $(DPCPP_OPTS)
 
 fcorr_1d_usm: fcorr_1d_usm.cpp
-	icpx $< -fsycl -o $@ $(DPCPP_OPTS)
+	dpcpp $< -o $@ $(DPCPP_OPTS)
 
 fcorr_2d_usm: fcorr_2d_usm.cpp
-	icpx $< -fsycl -o $@ $(DPCPP_OPTS)
+	dpcpp $< -o $@ $(DPCPP_OPTS)
 
 clean:
 	-rm -f fcorr_1d_buff fcorr_1d_usm fcorr_2d_usm

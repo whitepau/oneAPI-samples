@@ -13,7 +13,7 @@
 ************************************************************************/
 #include <cstdint>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include "oneapi/mkl.hpp"
 
 using namespace oneapi;

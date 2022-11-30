@@ -43,7 +43,7 @@
 #include <list>
 #include <vector>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include "oneapi/mkl.hpp"
 
 #include "utils.hpp"

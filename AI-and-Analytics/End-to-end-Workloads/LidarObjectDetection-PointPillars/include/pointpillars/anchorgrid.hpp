@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <cmath>
 #include <string>
 #include <vector>

@@ -10,7 +10,7 @@
 #include <random>
 #include <vector>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 
 constexpr int N = 7;
 

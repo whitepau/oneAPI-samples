@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#include <sycl/sycl.hpp>
+#include <CL/sycl.hpp>
 #include "oneapi/mkl.hpp"
 #include "oneapi/mkl/rng/device.hpp"
 

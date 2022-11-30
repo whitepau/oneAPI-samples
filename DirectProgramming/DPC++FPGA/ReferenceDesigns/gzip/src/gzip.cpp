@@ -122,8 +122,6 @@ int main(int argc, char *argv[]) {
   try {
 #ifdef FPGA_EMULATOR
     ext::intel::fpga_emulator_selector device_selector;
-#elif FPGA_SIMULATOR
-    ext::intel::fpga_simulator_selector device_selector;
 #else
     ext::intel::fpga_selector device_selector;
 #endif
@@ -156,8 +154,6 @@ int main(int argc, char *argv[]) {
 
 #ifdef FPGA_EMULATOR
     CompressFile(q, infilename, outfilenames, 1, true);
-#elif FPGA_SIMULATOR
-    CompressFile(q, infilename, outfilenames, 2, true);
 #else
     // warmup run - use this run to warmup accelerator. There are some steps in
     // the runtime that are only executed on the first kernel invocation but not
@@ -178,8 +174,6 @@ int main(int argc, char *argv[]) {
       std::cerr << "Run sys_check in the oneAPI root directory to verify.\n";
       std::cerr << "If you are targeting the FPGA emulator, compile with "
                    "-DFPGA_EMULATOR.\n";
-      std::cerr << "If you are targeting the FPGA simulator, compile with "
-                   "-DFPGA_SIMULATOR.\n";
     }
     std::terminate();
   }
@@ -221,11 +215,7 @@ int CompressFile(queue &q, std::string &input_file, std::vector<std::string> out
   // only supported on the PAC-S10-USM BSP. It's not
   // needed on PAC-A10 to achieve peak performance.
   bool isS10 =  (device_string.find("s10") != std::string::npos);
-#ifdef FPGA_SIMULATOR
-  bool prepin = false;
-#else
   bool prepin = q.get_device().has(aspect::usm_host_allocations);
-#endif
 
   if (isS10 && !prepin) {
     std::cout << "Warning: Host allocations are not supported on this platform, which means that pre-pinning is not supported. DMA transfers may be slower than expected which may reduce application throughput.\n\n";
@@ -291,11 +281,6 @@ int CompressFile(queue &q, std::string &input_file, std::vector<std::string> out
         } else {
           kinfo[eng][i].poutput_buffer = (char *)malloc(outputSize);
         }
-
-        std::cout << "outputSize: " << outputSize << " Prepin: "
-                << prepin << "\n";
-        std::cout << "kMinBufferSize: " << kMinBufferSize << " isz: " << isz 
-                << " kInOutPadding: " << kInOutPadding << "\n";
         if (kinfo[eng][i].poutput_buffer == NULL) {
           std::cout << "Cannot allocate output buffer.\n";
           free(kinfo[eng]);
@@ -334,9 +319,7 @@ int CompressFile(queue &q, std::string &input_file, std::vector<std::string> out
   event e_k_lz          [kNumEngines][buffers_count]; // LZ77 kernel
   event e_k_huff        [kNumEngines][buffers_count]; // Huffman Encoding kernel
 
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
   auto start = std::chrono::steady_clock::now();
 #endif
 
@@ -395,9 +378,7 @@ int CompressFile(queue &q, std::string &input_file, std::vector<std::string> out
   }
 
 // Stop the timer.
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
   auto end = std::chrono::steady_clock::now();
   double diff_total = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
   double gbps = iterations * isz / (double)diff_total / 1000000000.0;
@@ -482,9 +463,7 @@ int CompressFile(queue &q, std::string &input_file, std::vector<std::string> out
   if (report) {
     double compression_ratio =
         (double)((double)compressed_sz[0] / (double)isz / iterations);
-#ifdef FPGA_EMULATOR
-#elif FPGA_SIMULATOR
-#else
+#ifndef FPGA_EMULATOR
     std::cout << "Throughput: " << kNumEngines * gbps << " GB/s\n\n";
     for (int eng = 0; eng < kNumEngines; eng++) {
       std::cout << "TP breakdown for engine #" << eng << " (GB/s)\n";

@@ -1,7 +1,7 @@
 if(WIN32)
         set(CMAKE_CXX_COMPILER "dpcpp-cl")
 else()
-        set(CMAKE_CXX_COMPILER "icpx")
+        set(CMAKE_CXX_COMPILER "dpcpp")
 endif()
 # Set default build type to RelWithDebInfo if not specified
 if (NOT CMAKE_BUILD_TYPE)
