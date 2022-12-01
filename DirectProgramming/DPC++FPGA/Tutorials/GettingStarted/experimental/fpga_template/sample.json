@@ -12,7 +12,7 @@
     "base": "../../..",
     "include": [
       "README.md",
-      "Tutorials/GettingStarted/fpga_template",
+      "Tutorials/GettingStarted/experimental/fpga_template",
       "include"
     ],
     "exclude": []
@@ -57,10 +57,10 @@
         "id": "fpga_emu",
         "steps": [
           "dpcpp --version",
-          "cd ../../..",
+          "cd ../../../..",
           "mkdir build",
           "cd build",
-          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
+          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/experimental/fpga_template",
           "nmake fpga_emu",
           "fpga_template.fpga_emu.exe"
         ]
@@ -69,10 +69,10 @@
         "id": "report",
         "steps": [
           "dpcpp --version",
-          "cd ../../..",
+          "cd ../../../..",
           "mkdir build",
           "cd build",
-          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
+          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/experimental/fpga_template",
           "nmake report"
         ]
       },
@@ -80,10 +80,10 @@
         "id": "fpga_sim",
         "steps": [
           "dpcpp --version",
-          "cd ../../..",
+          "cd ../../../..",
           "mkdir build",
           "cd build",
-          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/fpga_template",
+          "cmake -G \"NMake Makefiles\" ../Tutorials/GettingStarted/experimental/fpga_template",
           "nmake fpga_sim",
           "fpga_template.fpga_sim.exe"
         ]

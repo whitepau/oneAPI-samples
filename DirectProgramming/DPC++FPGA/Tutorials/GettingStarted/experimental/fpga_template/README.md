@@ -5,12 +5,12 @@ This project serves as a template for Intel® oneAPI FPGA designs.
 | Optimized for                     | Description
 |:---                               |:---
 | OS                                | Linux* Ubuntu* 18.04/20.04 <br> RHEL*/CentOS* 8 <br> SUSE* 15 <br> Windows* 10
-| Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) Intel® FPGA 3rd party / custom platforms with oneAPI support (and SYCL USM support) Note: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
+| Hardware                          | Intel® FPGA Programmable Acceleration Card (PAC) D5005 (with Intel Stratix® 10 SX) <br> Intel® FPGA 3rd party / custom platforms with oneAPI support (and SYCL USM support) Note: Intel® FPGA PAC hardware is only compatible with Ubuntu 18.04*
 | Software                          | Intel® oneAPI DPC++ Compiler <br> Intel® Quartus Prime Pro Edition
 | What you will learn               | Best practices for creating and managing a oneAPI FPGA project
 | Time to complete                  | 10 minutes
 
-***Notice**: SYCL Unified Shared Memory (USM) host allocations (and therefore the code in this tutorial) are only supported for the Intel® FPGA PAC D5005 (with Intel Stratix® 10 SX) with USM support (i.e., intel_s10sx_pac:pac_s10_usm)* 
+***Notice**: SYCL Unified Shared Memory (USM) host allocations (and therefore the code in this tutorial) are only supported by Board Support Packages (BSPs) with USM support (e.g. the Intel® FPGA PAC D5005 (with Intel Stratix® 10 SX) `intel_s10sx_pac:pac_s10_usm`)* 
 
 ## Purpose
 
@@ -27,8 +27,8 @@ Use this project as a starting point when you build designs for the Intel® oneA
 ###############################################################################
 ### Customize these build variables
 ###############################################################################
-set(SOURCE_FILE <source files>)
-set(TARGET_NAME <base name>)
+set(SOURCE_FILE fpga_template.cpp)
+set(TARGET_NAME fpga_template)
 
 # Use cmake -DFPGA_DEVICE=<board-support-package>:<board-variant> to choose a
 # different device. Here are a few device examples (this list is not
@@ -39,6 +39,9 @@ set(TARGET_NAME <base name>)
 # Note that depending on your installation, you may need to specify the full 
 # path to the board support package (BSP), this usually is in your install 
 # folder.
+#
+# You can also specify a device family (E.g. "Arria10" or "Stratix10") or a
+# specific part number (E.g. "10AS066N3F40E2SG") to generate a standalone IP.
 if(NOT DEFINED FPGA_DEVICE)
     set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
 endif()

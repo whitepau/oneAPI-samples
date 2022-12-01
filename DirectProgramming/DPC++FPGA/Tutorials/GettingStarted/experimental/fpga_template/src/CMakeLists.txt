@@ -13,6 +13,9 @@ set(TARGET_NAME fpga_template)
 # Note that depending on your installation, you may need to specify the full 
 # path to the board support package (BSP), this usually is in your install 
 # folder.
+#
+# You can also specify a device family (E.g. "Arria10" or "Stratix10") or a
+# specific part number (E.g. "10AS066N3F40E2SG") to generate a standalone IP.
 if(NOT DEFINED FPGA_DEVICE)
     set(FPGA_DEVICE "intel_s10sx_pac:pac_s10_usm")
 endif()
@@ -32,6 +35,7 @@ set(EMULATOR_TARGET ${TARGET_NAME}.fpga_emu)
 # set(REPORT_TARGET ${TARGET_NAME}.report)
 set(SIMULATOR_TARGET ${TARGET_NAME}.fpga_sim)
 set(FPGA_TARGET ${TARGET_NAME}.fpga)
+# set(IP_EXPORT_TARGET ${TARGET_NAME}.fpga_ip_export)
 
 # FPGA device selection
 if(DEFINED FPGA_DEVICE)
@@ -47,7 +51,7 @@ if(WIN32)
 else()
     # add qactypes for Linux
     set(QACTYPES_COMPILE "-qactypes")
-    set(QACTYPES_LINK "")
+    set(QACTYPES_LINK "-qactypes")
 endif()
 
 # A DPC++ ahead-of-time (AoT) compile processes the device code in two stages.
@@ -56,7 +60,6 @@ endif()
 # 2. The "link" stage invokes the compiler's FPGA backend before linking. For
 #    this reason, FPGA backend flags must be passed as link flags in CMake.
 
-set(EXPERIMENTAL_INCLUDE "-I\"$ENV{INTELFPGAOCLSDKROOT}/include\"")
 set(EMULATOR_COMPILE_FLAGS "-fsycl -fintelfpga -Wall ${WIN_FLAG} ${QACTYPES_COMPILE} ${EXPERIMENTAL_INCLUDE}")
 set(EMULATOR_LINK_FLAGS    "-fsycl -fintelfpga ${QACTYPES_LINK}")
 set(FPGA_COMPILE_FLAGS     "-fsycl -fintelfpga -Wall ${WIN_FLAG} ${QACTYPES_COMPILE} ${EXPERIMENTAL_INCLUDE}")
@@ -89,7 +92,7 @@ set_target_properties(${REPORT_TARGET} PROPERTIES LINK_FLAGS "${FPGA_LINK_FLAGS}
 # fsycl-link=early stops the compiler after RTL generation, before invoking Quartus®
 
 ###############################################################################
-### FPGA Board Simulation
+### FPGA Simulation
 ###############################################################################
 # To compile in a single command:
 #   icpx -fsycl -fintelfpga -Xstarget=<FPGA_DEVICE> -Xssimulation -Xsghdl=1 fpga_compile.cpp -o fpga_compile.fpga_sim
@@ -113,3 +116,18 @@ add_executable(${FPGA_TARGET} EXCLUDE_FROM_ALL ${SOURCE_FILE})
 add_custom_target(fpga DEPENDS ${FPGA_TARGET})
 set_target_properties(${FPGA_TARGET} PROPERTIES COMPILE_FLAGS "${FPGA_COMPILE_FLAGS} -DFPGA_HARDWARE ${USER_FLAGS}")
 set_target_properties(${FPGA_TARGET} PROPERTIES LINK_FLAGS "${FPGA_LINK_FLAGS} -Xshardware ${USER_FLAGS}")
+
+###############################################################################
+### FPGA IP Export (apparently only necessary until 'correct' implementation of host pipes)
+###############################################################################
+# To compile in a single command:
+#   icpx -fsycl -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> -fsycl-link=early -fsycl-device-code-split=per_kernel fpga_compile.cpp -o fpga_compile.fpga_ip_export
+# CMake executes:
+#   [compile] icpx -fsycl -fintelfpga -o fpga_compile.cpp.o -c fpga_compile.cpp
+#   [link]    icpx -fsycl -fintelfpga -Xshardware -Xstarget=<FPGA_DEVICE> fpga_compile.cpp.o -o fpga_compile.fpga_ip_export
+set(IP_EXPORT_TARGET ${TARGET_NAME}.fpga_ip_export.a)
+# The compile output is not an executable, but an intermediate compilation result unique to DPC++.
+add_executable(${IP_EXPORT_TARGET} ${SOURCE_FILE})
+add_custom_target(fpga_ip_export DEPENDS ${IP_EXPORT_TARGET})
+set_target_properties(${IP_EXPORT_TARGET} PROPERTIES COMPILE_FLAGS "${FPGA_COMPILE_FLAGS} -DFPGA_HARDWARE ${USER_FLAGS}")
+set_target_properties(${IP_EXPORT_TARGET} PROPERTIES LINK_FLAGS "${FPGA_LINK_FLAGS} -Xshardware -fsycl-link=early -fsycl-device-code-split=per_kernel ${USER_FLAGS}")
