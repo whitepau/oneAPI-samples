@@ -3,7 +3,6 @@
 // oneAPI headers
 #include <sycl/ext/intel/fpga_extensions.hpp>
 #include <sycl/sycl.hpp>
-#include "tst.hpp"
 
 // Forward declare the kernel name in the global scope. This is an FPGA best
 // practice that reduces name mangling in the optimization reports.
@@ -29,8 +28,6 @@ class vector_add {
 #define VECT_SIZE 256
 
 int main() {
-
-  doStuff();
   bool passed = false;
 
   try {

@@ -10,7 +10,7 @@ endif()
 
 cmake_minimum_required (VERSION 3.7.2)
 
-project(fpga_template CXX)
+project(LoopUnroll CXX)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -47,7 +47,7 @@ set(USER_FLAGS "${USER_FLAGS}")
 
 # Use cmake -DUSER_INCLUDE_PATHS=<paths> to set extra paths for general
 # compilation.
-set(USER_INCLUDE_PATHS "${USER_INCLUDE_PATHS} ../../../include \"D:\\my file\"")
+set(USER_INCLUDE_PATHS "${USER_INCLUDE_PATHS} ../../../include /include2")
 
 ###############################################################################
 ### no changes after here
@@ -169,7 +169,7 @@ set_target_properties(${REPORT_TARGET} PROPERTIES OUTPUT_NAME ${REPORT_OUTPUT_NA
 # Make cmake print the locations of the command before building
 add_custom_target( displayReportCommands ALL
     ${CMAKE_COMMAND} -E cmake_echo_color --cyan ""
-    COMMENT "Find the compile command in ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json (the one using FPGA_REPORT) and the link command in ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REPORT_TARGET}.dir/link.txt")
+    COMMENT "Find the compile command in ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json (the one using FPGA_HARDWARE with fsycl-link=early) and the link command in ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REPORT_TARGET}.dir/link.txt")
 add_dependencies(${REPORT_TARGET} displayReportCommands)
 
 ###############################################################################
@@ -206,5 +206,5 @@ set_target_properties(${IP_EXPORT_TARGET} PROPERTIES OUTPUT_NAME ${IP_EXPORT_OUT
 # Make cmake print the locations of the command before building
 add_custom_target( displayExportCommands ALL
     ${CMAKE_COMMAND} -E cmake_echo_color --cyan ""
-    COMMENT "Find the compile command in ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json (the one using FPGA_EXPORT) and the link command in ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REPORT_TARGET}.dir/link.txt")
+    COMMENT "Find the compile command in ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json (the one using FPGA_HARDWARE with fsycl-link=early) and the link command in ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REPORT_TARGET}.dir/link.txt")
 add_dependencies(${IP_EXPORT_TARGET} displayExportCommands)
