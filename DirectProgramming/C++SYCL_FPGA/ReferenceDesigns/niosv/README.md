@@ -7,7 +7,7 @@ The `Nios V` sample is a reference design that demonstrates how to simulate an F
 | Time to complete          | ~30 minutes
 
 ## Purpose
-This FPGA reference design demonstrates a simple Direct Memory Access (DMA) module produced with the Intel® oneAPI DPC++/C++ Compiler, and how to use a Nio V softcore processor to interact with it.
+This FPGA reference design demonstrates a simple Direct Memory Access (DMA) module produced with the Intel® oneAPI DPC++/C++ Compiler, and how to use a Nios V softcore processor to interact with it.
 
 ## Prerequisites
 
