@@ -167,15 +167,17 @@ bool SubmitQuery9(queue& q, Database& dbinfo, std::string colour,
       // initialize regex word
       for (size_t i = 0; i < 11; i++) {
         const char c = regex_word_accessor[i];
-        UnrolledLoop<0, kRegexFilterElementsPerCycle>([&](auto re) { 
+#pragma unroll
+        for (size_t re = 0; re < kRegexFilterElementsPerCycle; ++re) {
           regex[re].word[i] = c;
-        });
+        }
       }
 
       // stream in rows of PARTS table and check partname against REGEX
       [[intel::initiation_interval(1), intel::ivdep]]
       for (size_t i = 0; i < p_iters; i++) {
-        UnrolledLoop<0, kRegexFilterElementsPerCycle>([&](auto re) {
+#pragma unroll
+        for (size_t re = 0; re < kRegexFilterElementsPerCycle; ++re) {
           const size_t idx = i * kRegexFilterElementsPerCycle + re;
           const bool idx_range = idx < p_rows;
 
@@ -184,9 +186,10 @@ bool SubmitQuery9(queue& q, Database& dbinfo, std::string colour,
           const DBIdentifier partkey = idx_range ? idx + 1 : 0;
 
           // read in regex string
-          UnrolledLoop<0, 55>([&](auto k) {
+#pragma unroll
+          for (size_t k = 0; k < 55; ++k) {
             regex[re].str[k] = p_name_accessor[idx * 55 + k];
-          });
+          }
 
           // run regex matching
           regex[re].Match();
@@ -195,7 +198,7 @@ bool SubmitQuery9(queue& q, Database& dbinfo, std::string colour,
           if (idx_range) {
             partkeys_matching_regex[partkey] = regex[re].Contains();
           }
-        });
+        }
       }
       ///////////////////////////////////////////////
 
@@ -463,7 +466,6 @@ bool SubmitQuery9(queue& q, Database& dbinfo, std::string colour,
       bool done = false;
       size_t num_rows = 0;
 
-      [[intel::initiation_interval(1)]]
       do {
         // get data from upstream
         bool valid;
@@ -506,7 +508,7 @@ bool SubmitQuery9(queue& q, Database& dbinfo, std::string colour,
           //    A) Apply the [[intel::speculated_iterations(0)]] attribute
           //    B) Explicitly bound the loop iterations
           // For an explanation why, see the optimize_inner_loops tutorial.
-          [[intel::initiation_interval(1), intel::speculated_iterations(0)]]
+          [[intel::speculated_iterations(0)]]
           for (char i = 0; i < valid_count && 
                 i < kLineItemOrdersJoinWinSize; i++) {
             UnrolledLoop<0, kLineItemOrdersJoinWinSize>([&](auto j) {

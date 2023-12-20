@@ -47,12 +47,15 @@
 
 #define REG_ARG_SOURCE_BASE \
   (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_ARG_ARG_SOURCE_REG)
+  (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_ARG_ARG_SOURCE_REG)
 
 #define REG_ARG_DEST_BASE \
+  (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_ARG_ARG_DEST_REG)
   (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_ARG_ARG_DEST_REG)
 
 #define REG_ARG_LENGTH_BASE      \
   (SIMPLE_DMA_ACCELERATOR_BASE + \
+   SIMPLEDMA_REGISTER_MAP_ARG_ARG_LENGTH_BYTES_REG)
    SIMPLEDMA_REGISTER_MAP_ARG_ARG_LENGTH_BYTES_REG)
 
 #define REG_START_BASE \
@@ -60,12 +63,17 @@
 
 #define REG_STATUS \
   (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_STATUS_REG)
+  (SIMPLE_DMA_ACCELERATOR_BASE + SIMPLEDMA_REGISTER_MAP_STATUS_REG)
 
 /// @brief configure and start the Simple DMA Accelerator IP
 ///
 /// @details `configure_and_start_dma` will accept the source, destination, and
 /// transfer length and write them into the kernel CSRs.
+/// transfer length and write them into the kernel CSRs.
 ///
+/// @note Since the kernel is located in the peripheral space of the Nios V
+/// processor, we simply dereference a pointer to bypass the data
+/// cache.
 /// @note Since the kernel is located in the peripheral space of the Nios V
 /// processor, we simply dereference a pointer to bypass the data
 /// cache.
@@ -75,6 +83,7 @@
 /// @param[in] destination Pointer to which to copy data
 ///
 /// @param[in] length_bytes Number of bytes of data to copy
+void configure_and_start_dma(unsigned int *source, unsigned int *destination,
 void configure_and_start_dma(unsigned int *source, unsigned int *destination,
                              unsigned int length_bytes) {
   // Make these pointers volatile since they point to registers. Repeated
@@ -155,6 +164,7 @@ int test_simple_dma() {
 
   // Busy-waiting for the accelerator to complete (kernel will fire off
   // interrupt as well but there is no register as of 2024.0 to clear it)
+  while ((*status_reg_ptr & KERNEL_REGISTER_MAP_DONE_MASK) !=
   while ((*status_reg_ptr & KERNEL_REGISTER_MAP_DONE_MASK) !=
          KERNEL_REGISTER_MAP_DONE_MASK) {
   }
