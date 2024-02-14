@@ -169,26 +169,21 @@ board.
 ### On a Linux* System
 
 1. Generate the `Makefile` by running `cmake`.
-  ```
-  mkdir build
-  cd build
-  ```
-  To compile for the default target (the Agilex® device family), run `cmake` using the command:
-  ```
-  cmake ..
-  ```
-
-  > **Note**: You can change the default target by using the command:
-  >  ```
-  >  cmake .. -DFPGA_DEVICE=<FPGA device family or FPGA part number>
-  >  ``` 
-  >
-  > Alternatively, you can target an explicit FPGA board variant and BSP by using the following command: 
-  >  ```
-  >  cmake .. -DFPGA_DEVICE=<board-support-package>:<board-variant>
-  >  ``` 
-  >
-  > You will only be able to run an executable on the FPGA if you specified a BSP.
+   ```
+   mkdir build
+   cd build
+   cmake .. -DFPGA_DEVICE=<board-support-package>:<board-variant>
+   ```
+   > **Note**: You **must** set `FPGA_DEVICE` to point to a BSP in order to build this sample. You can poll your system for available BSPs using the `aoc -list-boards` command. The board list that is printed out will be of the form 
+   > ```
+   > $> aoc -list-boards
+   > Board list:
+   >   <board-variant>
+   >      Board Package: <path/to/board/package>/board-support-package
+   >   
+   >   <board-variant2>
+   >      Board Package: <path/to/board/package>/board-support-package
+   > ```
 
 2. Compile the design through the generated `Makefile`. The following build
    targets are provided, matching the recommended development flow:
@@ -213,25 +208,21 @@ board.
 ### On a Windows* System
 
 1. Generate the `Makefile` by running `cmake`.
-  ```
-  mkdir build
-  cd build
-  ```
-  To compile for the default target (the Agilex® device family), run `cmake` using the command:
-  ```
-  cmake -G "NMake Makefiles" ..
-  ```
-  > **Note**: You can change the default target by using the command:
-  >  ```
-  >  cmake -G "NMake Makefiles" .. -DFPGA_DEVICE=<FPGA device family or FPGA part number>
-  >  ``` 
-  >
-  > Alternatively, you can target an explicit FPGA board variant and BSP by using the following command: 
-  >  ```
-  >  cmake -G "NMake Makefiles" .. -DFPGA_DEVICE=<board-support-package>:<board-variant>
-  >  ``` 
-  >
-  > You will only be able to run an executable on the FPGA if you specified a BSP.
+   ```
+   mkdir build
+   cd build
+   cmake -G "NMake Makefiles" .. -DFPGA_DEVICE=<board-support-package>:<board-variant>
+   ```
+   > **Note**: You **must** set `FPGA_DEVICE` to point to a BSP in order to build this sample. You can poll your system for available BSPs using the `aoc -list-boards` command. The board list that is printed out will be of the form 
+   > ```
+   > $> aoc -list-boards
+   > Board list:
+   >   <board-variant>
+   >      Board Package: <path/to/board/package>/board-support-package
+   >   
+   >   <board-variant2>
+   >      Board Package: <path/to/board/package>/board-support-package
+   > ```
 
 2. Compile the design through the generated `Makefile`. The following build
    targets are provided, matching the recommended development flow:
@@ -253,10 +244,10 @@ board.
      nmake fpga
      ```
 
-> **Note**: If you encounter any issues with long paths when compiling under
-Windows*, you may have to create your ‘build’ directory in a shorter path, for
-example c:\samples\build.  You can then run cmake from that directory, and
-provide cmake with the full path to your sample directory.
+>**Note**: If you encounter any issues with long paths when compiling under Windows*, you may have to create your 'build' directory in a shorter path, for example `C:\samples\build`. You can then run cmake from that directory, and provide cmake with the full path to your sample directory, for example
+> ```
+> C:\samples\build> cmake -G "NMake Makefiles" C:\long\path\to\code\sample\CMakeLists.txt
+> ```
 
 ## Examining the Reports
 Locate the pair of `report.html` files in the `mem_channel_interleaving.prj`
