@@ -211,15 +211,22 @@ Now, the first iteration of the `i+1`th  invocation of the inner loop will launc
 ## Example Output
 
 ```
-Calculating arithmetic sequence with factor = 1
-Calculating arithmetic sequence with factor = 2
-Calculating arithmetic sequence with factor = 3
-Calculating arithmetic sequence with factor = 4
-Calculating arithmetic sequence with factor = 5
+Test constrained kernel:
+Review arithmetic sequence with factor = 1
+Review arithmetic sequence with factor = 2
+Review arithmetic sequence with factor = 3
+Review arithmetic sequence with factor = 4
+Review arithmetic sequence with factor = 5
+Test unconstrained kernel:
+Review arithmetic sequence with factor = 1
+Review arithmetic sequence with factor = 2
+Review arithmetic sequence with factor = 3
+Review arithmetic sequence with factor = 4
+Review arithmetic sequence with factor = 5
 PASSED
 ```
 
-> **Note**: To observe the effect of `max_reinovcation_delay`, you should simulate the design and view the waveforms. The program output is only to verify functional correctness.
+> **Note**: To observe the effect of `max_reinvocation_delay`, you should simulate the design and view the waveforms. The program output only verifies functional correctness.
 
 
 ## License
